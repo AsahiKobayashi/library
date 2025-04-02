@@ -1,5 +1,7 @@
 import java.lang.reflect.Field;
 
+// lombok -> @Getter @Setter @Accessor(chain = true) アノテーションを対象のClassに付与することでも実現可能
+
 class ChainMethodGenerator {
 
     public static String build(Class<?> clazz) {
