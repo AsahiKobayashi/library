@@ -1,6 +1,6 @@
 ### 競技プログラミング
 
-### data-structures / データ構造
+# data-structures / データ構造
 |**|**|
 -------
 ||
