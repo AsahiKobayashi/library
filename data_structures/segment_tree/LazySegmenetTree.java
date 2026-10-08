@@ -1,3 +1,7 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Function;
+
 class LazySegtree<S,F> {
 
     private final int n;
