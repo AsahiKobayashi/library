@@ -1,57 +1,67 @@
-# 競技プログラミング向けライブラリ
+# Competitive Programming Library — Java
 
-Javaで実装した、競技プログラミング用のデータ構造・代数的インターフェース集です。
+競技プログラミングで**そのまま貼り付ける**ための Java コード集。
 
-## ライブラリ一覧
+## 方針
+- Java 17
+- **import 不要**（必要な標準ライブラリは `java.util.*` のような完全修飾名で参照）
+- 各ファイルは package 宣言なし・他のライブラリファイルへの依存なし
+- `Main.java` に必要なクラスだけコピーして使う
+- 添字は 0-indexed、区間は原則 `[l, r)`
+- 読みやすさよりも短く使いやすい実装を優先。ただし境界条件を省かない
 
-### データ構造
-
-| 種類 | 実装 | 主な用途 |
-| --- | --- | --- |
-| セグメント木 | [SegmentTree](data_structures/segment_tree/SegmentTree.java) | 点更新・区間集約 |
-| 遅延セグメント木 | [LazySegtree](data_structures/segment_tree/LazySegmenetTree.java) | 区間更新・区間集約 |
-| 2次元セグメント木 | [SegmentTree2D](data_structures/segment_tree/SegmentTree2D.java) | 2次元の範囲集約 |
-| Union-Find | [UnionFindTree](data_structures/union_find_tree/UnionFindTree.java) | 連結成分の管理 |
-| Binary Trie | [BinaryTrie](data_structures/trie/BinaryTrie.java) | 整数の集合・順序統計 |
-
-### 共通インターフェース
-
-| 名前 | 用途 |
+## Data Structures
+| ファイル | 内容 |
 | --- | --- |
-| [Monoid](data/monoid/Monoid.java) | 単位元と二項演算の定義 |
-| [MonoidAction](data/monoid/MonoidAction.java) | 遅延評価用の演算・作用の定義 |
+| [DSU.java](data-structures/DSU.java) | Union-Find：経路圧縮・サイズ併合 |
+| [FenwickTree.java](data-structures/FenwickTree.java) | long の点加算・区間和 |
+| [SegTree.java](data-structures/SegTree.java) | long の点代入・区間和 |
 
-## 使用方法
+## Graph
+| ファイル | 内容 |
+| --- | --- |
+| [BFS.java](graph/BFS.java) | 重みなしグラフの最短距離 |
+| [Dijkstra.java](graph/Dijkstra.java) | 非負重み付きグラフの最短距離 |
 
-必要な実装を競技プログラミングの提出コードにコピーして使用してください。
+## Math
+| ファイル | 内容 |
+| --- | --- |
+| [ModMath.java](math/ModMath.java) | mod 累乗・逆元（素数 mod） |
 
-- セグメント木と2次元セグメント木では `Monoid` を併用します。
-- 遅延セグメント木では `MonoidAction` を併用します。
-- ソースのクラスは基本的にパッケージ宣言のない構成です。
-- 提出先の仕様に合わせてクラス名や可視性を調整してください。
+## 使い方
 
-## ディレクトリ構成
+提出する `Main.java` の `Main` クラスの**外側**に必要な実装を貼り付けます。ほかのファイルの取り込みや import は不要です。
 
-```text
-.
-├── data/
-│   └── monoid/
-│       ├── Monoid.java
-│       └── MonoidAction.java
-├── data_structures/
-│   ├── segment_tree/
-│   │   ├── SegmentTree.java
-│   │   ├── SegmentTree2D.java
-│   │   └── LazySegmenetTree.java
-│   ├── trie/
-│   │   └── BinaryTrie.java
-│   └── union_find_tree/
-│       └── UnionFindTree.java
-└── README.md
+例：
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        DSU uf = new DSU(4);
+        uf.merge(0, 1);
+        System.out.println(uf.same(0, 1)); // true
+    }
+}
+
+// ここに DSU.java の内容を貼り付ける
 ```
 
-## メモ
+## 注意
+- `FenwickTree` の `sum(r)` は `[0,r)`、`sum(l,r)` は `[l,r)`
+- `SegTree` は現時点で **long の区間和専用**
+- `BFS.dist` の到達不能は `-1`
+- `Dijkstra.dist` の到達不能は `Dijkstra.INF`。すべての辺重みは非負、距離は INF 未満で使用
+- `ModMath.inv` は mod が素数かつ a が mod の倍数でない場合のみ
 
-各実装は個別のコード片として管理しています。利用前に、提出環境でのコンパイル・動作確認を行ってください。
+## テスト
 
-特に `LazySegmenetTree.java` のファイル名と `LazySegtree` のクラス名は異なります。ファイル名・APIの一括変更は既存コードへの影響を避けるため行っていません。
+JDK 17 以上でリポジトリのルートから：
+
+```sh
+javac data-structures/*.java graph/*.java math/*.java tests/LibraryTest.java
+java -cp tests:data-structures:graph:math LibraryTest
+```
+
+Windows のクラスパス区切り文字は `:` ではなく `;` を使います。
+
+旧ファイルは現行ツリーから除きました。過去の Git 履歴に残っています。

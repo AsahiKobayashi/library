@@ -1,0 +1,34 @@
+class Dijkstra {
+    static final long INF = Long.MAX_VALUE / 4;
+
+    static class Edge {
+        final int to;
+        final long cost;
+        Edge(int to, long cost) { this.to = to; this.cost = cost; }
+    }
+
+    // g[v] lists edges from v. All edge costs must be non-negative.
+    static long[] dist(Edge[][] g, int start) {
+        long[] d = new long[g.length];
+        java.util.Arrays.fill(d, INF);
+        java.util.PriorityQueue<long[]> pq =
+            new java.util.PriorityQueue<>(java.util.Comparator.comparingLong(a -> a[0]));
+        d[start] = 0;
+        pq.add(new long[]{0, start});
+        while (!pq.isEmpty()) {
+            long[] cur = pq.poll();
+            long cost = cur[0];
+            int v = (int) cur[1];
+            if (cost != d[v]) continue;
+            for (Edge e : g[v]) {
+                if (e.cost < 0) throw new IllegalArgumentException("negative edge");
+                if (cost > INF - e.cost) continue;
+                long nd = cost + e.cost;
+                if (nd >= d[e.to]) continue;
+                d[e.to] = nd;
+                pq.add(new long[]{nd, e.to});
+            }
+        }
+        return d;
+    }
+}
