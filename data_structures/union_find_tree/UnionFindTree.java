@@ -1,4 +1,8 @@
-    class UnionFindTree {
+import java.util.Arrays;
+import java.util.Objects;
+import java.util.function.BiConsumer;
+
+class UnionFindTree {
 
         private int [] parents , size;
         private int size_;
