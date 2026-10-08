@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 @SuppressWarnings("unchecked")
 class SegmentTree<T> {
 
