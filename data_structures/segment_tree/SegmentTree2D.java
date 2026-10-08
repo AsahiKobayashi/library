@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 @SuppressWarnings("unchecked")
 class SegmentTree2D <T> {
 
@@ -6,8 +8,8 @@ class SegmentTree2D <T> {
     private Monoid<T> monoid;
 
     SegmentTree2D(int h, int w, Monoid<T> monoid) {
-        init(h, w);
         this.monoid = monoid;
+        init(h, w);
     }
     
     private void init(int h, int w) {
