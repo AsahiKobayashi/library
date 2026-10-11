@@ -21,7 +21,7 @@ class SegTree<T> {
         while (s < n) s <<= 1;
         size = s;
         d = new Object[2 * size];
-        java.util.Arrays.fill(d, monoid.identity());
+        java.util.Arrays.fill(d, monoid.e());
     }
 
     /**
@@ -40,7 +40,7 @@ class SegTree<T> {
     private T val(int i) { return (T) d[i]; }
 
     /** 子ノードを結合して親ノードを更新する。 */
-    private void pull(int i) { d[i] = monoid.combine(val(i << 1), val(i << 1 | 1)); }
+    private void pull(int i) { d[i] = monoid.op(val(i << 1), val(i << 1 | 1)); }
 
     /**
      * 要素を代入する。
@@ -72,12 +72,12 @@ class SegTree<T> {
      */
     T prod(int l, int r) {
         if (l < 0 || l > r || r > n) throw new IndexOutOfBoundsException();
-        T left = monoid.identity(), right = monoid.identity();
+        T left = monoid.e(), right = monoid.e();
         for (l += size, r += size; l < r; l >>= 1, r >>= 1) {
-            if ((l & 1) != 0) left = monoid.combine(left, val(l++));
-            if ((r & 1) != 0) right = monoid.combine(val(--r), right);
+            if ((l & 1) != 0) left = monoid.op(left, val(l++));
+            if ((r & 1) != 0) right = monoid.op(val(--r), right);
         }
-        return monoid.combine(left, right);
+        return monoid.op(left, right);
     }
 
     /** @return 全要素の結合結果。 */
