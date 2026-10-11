@@ -102,8 +102,9 @@ class LazySegTreeTest {
             for (boolean assignment : new boolean[]{false, true}) {
                 long[] a = new long[n];
                 for (int i = 0; i < n; i++) a[i] = rd.nextInt(101) - 50;
-                LazySegTree<SumLen, Long> seg = new LazySegTree<>(values(a),
-                    assignment ? new RangeAssignSumAction() : new RangeAddSumAction());
+                MonoidAction<SumLen, Long> action =
+                    assignment ? new RangeAssignSumAction() : new RangeAddSumAction();
+                LazySegTree<SumLen, Long> seg = new LazySegTree<>(values(a), action);
                 for (int t = 0; t < 300; t++) {
                     int l = rd.nextInt(n + 1), r = rd.nextInt(n + 1);
                     if (l > r) { int x = l; l = r; r = x; }
