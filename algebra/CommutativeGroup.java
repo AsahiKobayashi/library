@@ -7,7 +7,7 @@ interface CommutativeGroup<T> extends Monoid<T> {
     /**
      * 値の逆元を返す。
      * @param a 対象の値
-     * @return combine(a, inverse(a)) が単位元となる値
+     * @return op(a, inverse(a)) が単位元となる値
      */
     T inverse(T a);
 }
