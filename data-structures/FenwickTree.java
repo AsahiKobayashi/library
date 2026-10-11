@@ -1,60 +1,51 @@
 /**
- * 可換群に対応した Fenwick Tree。点更新と区間集約を行う。
+ * long 型の加算と区間和を扱う Fenwick Tree（Binary Indexed Tree）。
  * 添字は0始まり、区間は半開区間 [l, r)。
- * @param <T> 要素の型
  */
-class FenwickTree<T> {
+class FenwickTree {
     private final int n;
-    private final Object[] bit;
-    private final CommutativeGroup<T> group;
+    private final long[] bit;
 
     /**
-     * 全要素を単位元で初期化する。
-     * @param n 要素数
-     * @param group 可換な結合演算、単位元、逆元
+     * 要素数 n の配列を、すべて0で初期化する。
+     * @param n 要素数（0以上）
      */
-    FenwickTree(int n, CommutativeGroup<T> group) {
-        if (n < 0) throw new IllegalArgumentException();
+    FenwickTree(int n) {
+        if (n < 0) throw new IllegalArgumentException("n must be non-negative");
         this.n = n;
-        this.group = group;
-        bit = new Object[n + 1];
-        java.util.Arrays.fill(bit, group.e());
+        bit = new long[n + 1];
     }
 
-    /** @return 内部ノードの値（型キャスト用）。 */
-    @SuppressWarnings("unchecked")
-    private T val(int i) { return (T) bit[i]; }
-
     /**
-     * i番目の値にxを結合する。
-     * @param i 更新する添字
-     * @param x 結合する値
+     * i番目の値に x を加算する。
+     * @param i 更新する添字（0以上n未満）
+     * @param x 加算する値（負数も可）
      */
-    void add(int i, T x) {
+    void add(int i, long x) {
         if (i < 0 || i >= n) throw new IndexOutOfBoundsException();
-        for (i++; i <= n; i += i & -i) bit[i] = group.op(val(i), x);
+        for (i++; i <= n; i += i & -i) bit[i] += x;
     }
 
     /**
-     * [0, r) の結合結果を求める。
+     * 区間 [0, r) の和を求める。
      * @param r 右端（含まない）
-     * @return prefixの結合結果
+     * @return 累積和
      */
-    T sum(int r) {
+    long sum(int r) {
         if (r < 0 || r > n) throw new IndexOutOfBoundsException();
-        T s = group.e();
-        for (; r > 0; r -= r & -r) s = group.op(s, val(r));
+        long s = 0;
+        for (; r > 0; r -= r & -r) s += bit[r];
         return s;
     }
 
     /**
-     * [l, r) の結合結果を求める。
+     * 区間 [l, r) の和を求める。
      * @param l 左端（含む）
      * @param r 右端（含まない）
-     * @return 区間の結合結果
+     * @return 区間和。空区間なら0
      */
-    T sum(int l, int r) {
+    long sum(int l, int r) {
         if (l < 0 || l > r || r > n) throw new IndexOutOfBoundsException();
-        return group.op(sum(r), group.inverse(sum(l)));
+        return sum(r) - sum(l);
     }
 }
