@@ -15,16 +15,19 @@ class LibraryTest {
         eq(2, dsu.size(1));
         eq(3, dsu.groups());
 
-        CommutativeGroup<Long> addition = new CommutativeGroup<>() {
-            public Long e() { return 0L; }
-            public Long op(Long a, Long b) { return a + b; }
-            public Long inverse(Long a) { return -a; }
-        };
-        FenwickTree<Long> fw = new FenwickTree<>(4, addition);
-        fw.add(0, 5L); fw.add(2, -2L);
+        FenwickTree fw = new FenwickTree(4);
+        fw.add(0, 5L);
+        fw.add(2, -2L);
         eq(3L, fw.sum(4));
         eq(-2L, fw.sum(1, 3));
         eq(0L, fw.sum(0));
+        fw.add(0, -5L);
+        eq(-2L, fw.sum(0, 4));
+        eq(0L, fw.sum(2, 2));
+
+        FenwickTree empty = new FenwickTree(0);
+        eq(0L, empty.sum(0));
+        eq(0L, empty.sum(0, 0));
 
         Monoid<Long> sum = new Monoid<>() {
             public Long e() { return 0L; }
@@ -46,16 +49,6 @@ class LibraryTest {
         eq("bc", words.prod(1, 3));
         words.set(1, "X");
         eq("aXc", words.allProd());
-
-        CommutativeGroup<Integer> xor = new CommutativeGroup<>() {
-            public Integer e() { return 0; }
-            public Integer op(Integer a, Integer b) { return a ^ b; }
-            public Integer inverse(Integer a) { return a; }
-        };
-        FenwickTree<Integer> fx = new FenwickTree<>(3, xor);
-        fx.add(0, 3); fx.add(1, 5); fx.add(2, 6);
-        eq(3 ^ 5 ^ 6, fx.sum(3));
-        eq(5 ^ 6, fx.sum(1, 3));
 
         int[][] g = {{1, 2}, {0, 3}, {0}, {1}, {}};
         int[] bfs = BFS.dist(g, 0);
