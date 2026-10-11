@@ -19,10 +19,14 @@ jobs:
       - name: Compile all source files
         run: |
           mkdir -p out
-          find monoid data-structures graph math tests -name '*.java' -print0 | xargs -0 javac -d out
+          find monoid data-structures graph math string tests -name '*.java' -print0 | xargs -0 javac -d out
       - name: Test standard library
         run: java -cp out LibraryTest
       - name: Test lazy tree and monoid presets
         run: java -cp out LazySegTreeTest
       - name: Test Integer variants
         run: java -cp out IntegerLibraryTest
+      - name: Test rolling hashes and lazy updates
+        run: java -cp out RollingHashTest
+      - name: Test LCS algorithms
+        run: java -cp out LCSTest
