@@ -12,7 +12,7 @@ Java 17 向けの **import 不要・ジェネリクス中心・汎用性重視**
 ## Algebra
 | ファイル | 説明 |
 | --- | --- |
-| [Monoid.java](algebra/Monoid.java) | モノイド：単位元 `identity()`、結合演算 `combine(a,b)` |
+| [Monoid.java](algebra/Monoid.java) | モノイド：単位元 `e()`、結合演算 `op(a,b)` |
 | [CommutativeGroup.java](algebra/CommutativeGroup.java) | 可換群：モノイドに逆元 `inverse(a)` を追加 |
 
 ## Data Structures
@@ -39,8 +39,8 @@ Java 17 向けの **import 不要・ジェネリクス中心・汎用性重視**
 
 ```java
 Monoid<Long> sum = new Monoid<>() {
-    public Long identity() { return 0L; }
-    public Long combine(Long a, Long b) { return a + b; }
+    public Long e() { return 0L; }
+    public Long op(Long a, Long b) { return a + b; }
 };
 SegTree<Long> seg = new SegTree<>(
     java.util.Arrays.asList(1L, 2L, 3L), sum
@@ -52,8 +52,8 @@ System.out.println(seg.prod(0, 3)); // 6
 
 ```java
 CommutativeGroup<Long> addition = new CommutativeGroup<>() {
-    public Long identity() { return 0L; }
-    public Long combine(Long a, Long b) { return a + b; }
+    public Long e() { return 0L; }
+    public Long op(Long a, Long b) { return a + b; }
     public Long inverse(Long a) { return -a; }
 };
 FenwickTree<Long> fw = new FenwickTree<>(5, addition);
