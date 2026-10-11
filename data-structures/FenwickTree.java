@@ -18,7 +18,7 @@ class FenwickTree<T> {
         this.n = n;
         this.group = group;
         bit = new Object[n + 1];
-        java.util.Arrays.fill(bit, group.identity());
+        java.util.Arrays.fill(bit, group.e());
     }
 
     /** @return 内部ノードの値（型キャスト用）。 */
@@ -32,7 +32,7 @@ class FenwickTree<T> {
      */
     void add(int i, T x) {
         if (i < 0 || i >= n) throw new IndexOutOfBoundsException();
-        for (i++; i <= n; i += i & -i) bit[i] = group.combine(val(i), x);
+        for (i++; i <= n; i += i & -i) bit[i] = group.op(val(i), x);
     }
 
     /**
@@ -42,8 +42,8 @@ class FenwickTree<T> {
      */
     T sum(int r) {
         if (r < 0 || r > n) throw new IndexOutOfBoundsException();
-        T s = group.identity();
-        for (; r > 0; r -= r & -r) s = group.combine(s, val(r));
+        T s = group.e();
+        for (; r > 0; r -= r & -r) s = group.op(s, val(r));
         return s;
     }
 
@@ -55,6 +55,6 @@ class FenwickTree<T> {
      */
     T sum(int l, int r) {
         if (l < 0 || l > r || r > n) throw new IndexOutOfBoundsException();
-        return group.combine(sum(r), group.inverse(sum(l)));
+        return group.op(sum(r), group.inverse(sum(l)));
     }
 }
