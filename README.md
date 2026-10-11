@@ -80,12 +80,60 @@ monoid/
 | 実装 | 内容 | 必要な演算インターフェース |
 | --- | --- | --- |
 | [DSU](data-structures/DSU.java) | Union-Find | なし |
+| [BinaryTrie](data-structures/BinaryTrie.java) | 重複する非負整数の管理・XOR最小最大・順位取得・一括XOR | なし |
+| [AccessibleDeque<T>](data-structures/AccessibleDeque.java) | 両端操作＋任意の添字へのO(1)アクセス | なし |
 | [FenwickTree](data-structures/FenwickTree.java) | `long` 点加算・区間和 | なし |
 | [SegTree<T>](data-structures/SegTree.java) | 点代入・区間集約 | `Monoid<T>` |
 | [LazySegTree<S,F>](data-structures/LazySegTree.java) | 点代入・区間更新・区間集約・境界探索 | `MonoidAction<S,F>` |
 
 グラフ： [BFS](graph/BFS.java) / [Dijkstra](graph/Dijkstra.java)  
 数学： [ModMath](math/ModMath.java)
+
+## BinaryTrie
+
+`BinaryTrie` は重複を許す非負整数の多重集合。ビット数は1～63で指定でき、操作は基本的に **O(bitWidth)**、全要素XORは **O(1)** です。
+
+```java
+BinaryTrie trie = new BinaryTrie(31); // [0, 2^31) の整数
+trie.add(5);
+trie.add(5);
+trie.add(10);
+
+System.out.println(trie.count(5)); // 2
+System.out.println(trie.kth(1));  // 5（0-indexed、重複含む）
+System.out.println(trie.minXor(6)); // 3 = 5 xor 6
+trie.xorAll(3);                    // 全要素をXORで更新
+trie.erase(6);                    // 更新後の現在値から1個削除
+```
+
+`minXor(x)` / `maxXor(x)` は **XOR結果**、`argMinXor(x)` / `argMaxXor(x)` は **その結果を与える要素** を返します。
+`countLessThan(x)`、`lowerBound(x)`、`min()`、`max()`、`clear()` も使用できます。空集合からの値取得は例外です。
+
+引数は非負整数（63ビットなら `0` ～ `Long.MAX_VALUE`）。負数や設定ビット数を超えた値は扱いません。値の型は `long` なので `int` からも渡せます。
+
+**必要なファイルは `BinaryTrie.java` のみ。**
+
+## AccessibleDeque
+
+`AccessibleDeque<T>` は `get(i)` / `set(i, x)` が **O(1)** のDeque。
+リングバッファ方式で、両端の追加・削除も **償却O(1)** です。
+
+```java
+AccessibleDeque<Integer> deque = new AccessibleDeque<>();
+deque.pushBack(20);
+deque.pushFront(10);
+deque.pushBack(30);
+System.out.println(deque.get(1)); // 20
+deque.set(1, 99);
+System.out.println(deque.popFront()); // 10
+System.out.println(deque.peekLast()); // 30
+```
+
+`addFirst` / `addLast`、`removeFirst` / `removeLast`、`peekFirst` / `peekLast` にも対応。
+空Dequeからの削除は例外、`peekFirst` / `peekLast` は `null` を返します。**格納する要素の `null` は不可**。
+`Iterable<T>` に対応しているため拡張for文も使えます。
+
+**必要なファイルは `AccessibleDeque.java` のみ。**
 
 ## 文字列アルゴリズム
 
@@ -227,6 +275,8 @@ java -cp out LazySegTreeTest
 java -cp out IntegerLibraryTest
 java -cp out RollingHashTest
 java -cp out LCSTest
+java -cp out BinaryTrieTest
+java -cp out AccessibleDequeTest
 ```
 
 Windows PowerShell では次のようにコンパイルできます：
