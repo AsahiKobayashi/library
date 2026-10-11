@@ -87,6 +87,68 @@ monoid/
 グラフ： [BFS](graph/BFS.java) / [Dijkstra](graph/Dijkstra.java)  
 数学： [ModMath](math/ModMath.java)
 
+## 文字列アルゴリズム
+
+| ファイル | 説明 |
+| --- | --- |
+| [RollingHash.java](string/rolling-hash/RollingHash.java) | 2つの素数法で区間ハッシュ、結合、繰り返し、区間一括加算に対応 |
+| [LongestCommonSubsequence.java](string/lcs/LongestCommonSubsequence.java) | **LCS：最長共通部分列**（非連続でもよい）。長さ・復元・ジェネリックなリスト版 |
+| [LongestCommonSubstring.java](string/lcs/LongestCommonSubstring.java) | **最長共通部分文字列**（連続区間）。Rolling Hashで長さと位置を探索、文字列の直接照合も実施 |
+
+### Rolling Hash（変更なしの文字列）
+
+```java
+RollingHash a = new RollingHash("abracadabra");
+RollingHash b = new RollingHash("cad");
+System.out.println(a.same(4, 7, b, 0, 3)); // true
+System.out.println(a.lcp(4, b, 0));         // 3
+```
+
+`RollingHash.java` のみ必要です。文字列はJavaのUTF-16 `char` 単位で扱い、`char + 1` をハッシュ化します。ハッシュ衝突の可能性はゼロではありません。
+
+### SegTreeと組み合わせる（点更新）
+
+```java
+String s = "abcd";
+RollingHash rh = new RollingHash(s.length());
+java.util.ArrayList<RollingHash.Hash> chars = new java.util.ArrayList<>();
+for (int i = 0; i < s.length(); i++) chars.add(rh.ofChar(s.charAt(i)));
+
+SegTree<RollingHash.Hash> seg = new SegTree<>(chars, new RollingHashMonoid(rh));
+seg.set(1, rh.ofChar('x'));
+System.out.println(seg.prod(0, 4).equals(new RollingHash("axcd").hash(0, 4))); // true
+```
+
+必要：`RollingHash.java`、`RollingHashMonoid.java`、`Monoid.java`、`SegTree.java`。
+
+### LazySegTreeと組み合わせる（区間代入）
+
+```java
+String s = "abcd";
+RollingHash rh = new RollingHash(s.length());
+java.util.ArrayList<RollingHash.Hash> chars = new java.util.ArrayList<>();
+for (int i = 0; i < s.length(); i++) chars.add(rh.ofChar(s.charAt(i)));
+
+LazySegTree<RollingHash.Hash, Long> lazy =
+    new LazySegTree<>(chars, new RangeAssignHashAction(rh));
+lazy.apply(1, 3, (long) 'Z' + 1); // "aZZd"：文字の場合はchar + 1
+System.out.println(lazy.allProd().equals(new RollingHash("aZZd").hash(0, 4))); // true
+```
+
+必要：`RollingHash.java`、`RangeAssignHashAction.java`、`Monoid.java`、`MonoidAction.java`、`LazySegTree.java`。
+
+整数列の区間加算には `RangeAddHashAction.java` を使えます。更新値は `Long` で、更新前後の値が整数オーバーフローしない用途を想定しています。いずれの更新でも **RollingHashの最大長は配列長以上** にしてください。動的なハッシュは `LazySegTree` の区間集約値 `RollingHash.Hash` として扱います。
+
+### LCS（最長共通部分列）と最長共通部分文字列
+
+```java
+System.out.println(LongestCommonSubsequence.length("ABCBDAB", "BDCABA")); // 4
+System.out.println(LongestCommonSubsequence.one("abcde", "ace"));          // ace
+System.out.println(LongestCommonSubstring.one("abcXYZdef", "123XYZ456")); // XYZ
+```
+
+`LongestCommonSubsequence.java` は単独で利用できます。`LongestCommonSubstring.java` は `RollingHash.java` を併せてコピーしてください。**部分列は飛び飛びでもOK、部分文字列は連続が必須**という違いがあります。
+
 ## 使用例
 
 ### モノイドによるセグメント木
@@ -159,16 +221,18 @@ JDK 17 以上。Linux/macOS のリポジトリルートから実行：
 
 ```sh
 mkdir -p out
-javac -d out $(find monoid data-structures graph math tests -name '*.java')
+javac -d out $(find monoid data-structures graph math string tests -name '*.java')
 java -cp out LibraryTest
 java -cp out LazySegTreeTest
 java -cp out IntegerLibraryTest
+java -cp out RollingHashTest
+java -cp out LCSTest
 ```
 
 Windows PowerShell では次のようにコンパイルできます：
 
 ```powershell
-$files = Get-ChildItem monoid,data-structures,graph,math,tests -Recurse -Filter *.java | ForEach-Object FullName
+$files = Get-ChildItem monoid,data-structures,graph,math,string,tests -Recurse -Filter *.java | ForEach-Object FullName
 New-Item -ItemType Directory -Force out | Out-Null
 javac -d out $files
 java -cp out LibraryTest
