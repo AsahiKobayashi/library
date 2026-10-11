@@ -60,9 +60,9 @@ class IntegerLibraryTest {
         add.apply(0, 2, 4);
         eq(new IntSumLen(14, 3), add.allProd());
         add.apply(2, -3);
-        eq(new IntSumLen(10, 3), add.prod(0, 3));
+        eq(new IntSumLen(11, 3), add.prod(0, 3));
         add.set(1, IntSumLen.leaf(9));
-        eq(new IntSumLen(13, 2), add.prod(0, 2));
+        eq(new IntSumLen(14, 2), add.prod(0, 2));
         eq(new IntSumLen(0, 0), add.prod(2, 2));
         eq(new IntSumLen(0, 1), add.get(2));
 
