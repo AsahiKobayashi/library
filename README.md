@@ -1,55 +1,101 @@
 # Competitive Programming Library — Java
 
-Java 17 向けの **import 不要・必要な箇所はジェネリクスで汎用化**した競プロライブラリです。各メソッドには日本語のJavadocを付けています。
+Java 17 用の競技プログラミングライブラリ。**import不要・日本語Javadoc・ジェネリクス重視**。
+モノイドや作用は**演算ごとにフォルダを分けた独立クラス**として管理しています。
 
-## 設計方針
-- 標準ライブラリは完全修飾名で参照し、`import` を書かない
-- セグメント木の演算は `algebra/Monoid.java` に分離。Fenwick Tree は `long` の加算専用
-- 必要なクラスを `Main` の外側に貼り付ける（パッケージ宣言なし）
-- 0-indexed、区間は原則 `[l, r)`
-- 使うデータ構造に応じて、必要なインターフェースもコピーする
+## 方針
 
-## Algebra
-| ファイル | 説明 |
+- 標準ライブラリは完全修飾名で参照し、`import` は書かない
+- Javaの`package`宣言は置かない。必要なファイルの内容を `Main` の外側にコピーする
+- 0-indexed、区間は原則 `[l, r)`（左端を含み、右端を含まない）
+- 演算の定義はデータ構造とは別ファイルに置く
+- `FenwickTree` はシンプルな `long` 加算・区間和専用とする
+
+## モノイドのインターフェース
+
+| インターフェース | 用途 |
 | --- | --- |
-| [Monoid.java](algebra/Monoid.java) | モノイド：単位元 `e()`、結合演算 `op(a,b)` |
+| [Monoid.java](algebra/Monoid.java) | `e()`：単位元、`op(a,b)`：結合演算 |
+| [CommutativeMonoid.java](algebra/CommutativeMonoid.java) | 交換法則を満たす `Monoid`（逆元は不要） |
+| [MonoidAction.java](algebra/MonoidAction.java) | 遅延更新用の `id()`、`mapping(f,x)`、`composition(f,g)`（先にg、次にf） |
 
-## Data Structures
-| ファイル | 説明 | 依存 |
+## 定番モノイド
+
+すべて独立ファイルなので、使いたい演算だけコピーできます。
+
+### 可換モノイド
+
+| 演算 | 実装 | 単位元 |
 | --- | --- | --- |
-| [DSU.java](data-structures/DSU.java) | Union-Find | なし |
-| [SegTree.java](data-structures/SegTree.java) | 任意のモノイドによる区間集約 | `Monoid.java` |
-| [FenwickTree.java](data-structures/FenwickTree.java) | `long` の点加算・区間和 | なし |
+| 加算 | [LongSumMonoid](algebra/monoids/commutative/sum/LongSumMonoid.java) | `0L` |
+| 乗算 | [LongProductMonoid](algebra/monoids/commutative/product/LongProductMonoid.java) | `1L` |
+| 最小値 | [LongMinMonoid](algebra/monoids/commutative/min/LongMinMonoid.java) | `Long.MAX_VALUE` |
+| 最大値 | [LongMaxMonoid](algebra/monoids/commutative/max/LongMaxMonoid.java) | `Long.MIN_VALUE` |
+| 最大公約数（非負整数） | [LongGcdMonoid](algebra/monoids/commutative/gcd/LongGcdMonoid.java) | `0L` |
+| XOR | [LongXorMonoid](algebra/monoids/commutative/xor/LongXorMonoid.java) | `0L` |
+| 論理AND | [BooleanAndMonoid](algebra/monoids/commutative/and/BooleanAndMonoid.java) | `true` |
+| 論理OR | [BooleanOrMonoid](algebra/monoids/commutative/or/BooleanOrMonoid.java) | `false` |
 
-## Graph
-| ファイル | 説明 |
-| --- | --- |
-| [BFS.java](graph/BFS.java) | 重みなしグラフの最短距離 |
-| [Dijkstra.java](graph/Dijkstra.java) | 非負重みグラフの最短距離 |
+### 非可換モノイド
 
-## Math
-| ファイル | 説明 |
-| --- | --- |
-| [ModMath.java](math/ModMath.java) | mod累乗・素数modの逆元 |
+| 演算 | 実装 | 単位元 |
+| --- | --- | --- |
+| 文字列連結 | [StringConcatMonoid](algebra/monoids/noncommutative/concat/StringConcatMonoid.java) | 空文字列 |
+
+## モノイド作用（Lazy Segment Tree）
+
+| 演算 | 実装 | 更新の型 |
+| --- | --- | --- |
+| 区間加算・区間和 | [RangeAddSumAction](algebra/actions/range-add-sum/RangeAddSumAction.java) | `Long`（加算量） |
+| 区間代入・区間和 | [RangeAssignSumAction](algebra/actions/range-assign-sum/RangeAssignSumAction.java) | `Long`（代入値） |
+
+どちらも集約値に [SumLen](algebra/actions/common/SumLen.java)（`sum` と `len`）を使います。
+`RangeAssignSumAction` の更新値 `null` は「更新なし」です。
+
+## データ構造
+
+| 実装 | 内容 | 必要な演算インターフェース |
+| --- | --- | --- |
+| [DSU](data-structures/DSU.java) | Union-Find | なし |
+| [FenwickTree](data-structures/FenwickTree.java) | `long` 点加算・区間和 | なし |
+| [SegTree<T>](data-structures/SegTree.java) | 点代入・区間集約 | `Monoid<T>` |
+| [LazySegTree<S,F>](data-structures/LazySegTree.java) | 点代入・区間更新・区間集約・境界探索 | `MonoidAction<S,F>` |
+
+グラフ： [BFS](graph/BFS.java) / [Dijkstra](graph/Dijkstra.java)  
+数学： [ModMath](math/ModMath.java)
 
 ## 使用例
 
-まず、用途に応じた演算を定義します。
+### モノイドによるセグメント木
 
 ```java
-Monoid<Long> sum = new Monoid<>() {
-    public Long e() { return 0L; }
-    public Long op(Long a, Long b) { return a + b; }
-};
 SegTree<Long> seg = new SegTree<>(
-    java.util.Arrays.asList(1L, 2L, 3L), sum
+    java.util.Arrays.asList(4L, 1L, 7L),
+    new LongMinMonoid()
 );
-System.out.println(seg.prod(0, 3)); // 6
+System.out.println(seg.prod(0, 3)); // 1
 ```
 
-`SegTree` を使うときは **`Monoid.java` と `SegTree.java` の両方**をコピーしてください。
+必要なファイル：`Monoid.java`、`CommutativeMonoid.java`、`LongMinMonoid.java`、`SegTree.java`。
+文字列連結なら `Monoid.java`、`StringConcatMonoid.java`、`SegTree.java` を使います。
 
-Fenwick Tree は演算の定義なしで使えます。
+### 区間加算・区間和の遅延セグメント木
+
+```java
+LazySegTree<SumLen, Long> lazy = new LazySegTree<>(
+    java.util.Arrays.asList(
+        SumLen.leaf(1), SumLen.leaf(2), SumLen.leaf(3)
+    ),
+    new RangeAddSumAction()
+);
+lazy.apply(0, 2, 4L);
+System.out.println(lazy.prod(0, 3).sum); // 14
+```
+
+必要なファイル：`Monoid.java`、`MonoidAction.java`、`SumLen.java`、`RangeAddSumAction.java`、`LazySegTree.java`。
+区間代入なら `RangeAssignSumAction.java` に置き換えます。いずれも `import` 不要です。
+
+### Fenwick Tree は単体で利用
 
 ```java
 FenwickTree fw = new FenwickTree(5);
@@ -58,19 +104,24 @@ fw.add(2, -1L);
 System.out.println(fw.sum(0, 3)); // 3
 ```
 
-`FenwickTree.java` だけをコピーすれば利用できます。
-
-`Monoid` は交換法則を必要としないので、文字列結合などにも利用できます。
-
 ## テスト
 
-JDK 17以上でリポジトリのルートから：
+JDK 17 以上。Linux/macOS のリポジトリルートから実行：
 
 ```sh
-javac algebra/*.java data-structures/*.java graph/*.java math/*.java tests/LibraryTest.java
-java -cp tests:algebra:data-structures:graph:math LibraryTest
+mkdir -p out
+javac -d out $(find algebra data-structures graph math tests -name '*.java')
+java -cp out LibraryTest
+java -cp out LazySegTreeTest
 ```
 
-Windows ではクラスパスの区切りを `;` に変更してください。
+Windows PowerShell では次のようにコンパイルできます：
 
-**補足:** `SegTree<T>` は汎用型、`FenwickTree` は加算専用の `long` 型です。
+```powershell
+$files = Get-ChildItem algebra,data-structures,graph,math,tests -Recurse -Filter *.java | ForEach-Object FullName
+javac -d out $files
+java -cp out LibraryTest
+java -cp out LazySegTreeTest
+```
+
+**注意**：ファイルの配置はカテゴリ分け用です。Javaのパッケージは使っていないため、単体コンパイル時は必要な依存クラスとともにコンパイルしてください。
