@@ -29,8 +29,6 @@ monoid/
     │   ├── xor/
     │   ├── and/
     │   └── or/
-    ├── noncommutative/
-    │   └── concat/          # StringConcatMonoid
     └── action/
         ├── common/          # SumLen, IntSumLen
         ├── range-add-sum/
@@ -68,12 +66,6 @@ monoid/
 | 論理AND | — | [BooleanAndMonoid](monoid/template/commutative/and/BooleanAndMonoid.java) | `true` |
 | 論理OR | — | [BooleanOrMonoid](monoid/template/commutative/or/BooleanOrMonoid.java) | `false` |
 
-### 非可換モノイド
-
-| 演算 | 実装 | 単位元 |
-| --- | --- | --- |
-| 文字列連結 | [StringConcatMonoid](monoid/template/noncommutative/concat/StringConcatMonoid.java) | 空文字列 |
-
 ## モノイド作用（Lazy Segment Tree）
 
 | 演算 | Integer版 | Long版 |
@@ -108,7 +100,6 @@ System.out.println(seg.prod(0, 3)); // 1
 ```
 
 必要なファイル：`Monoid.java`、`CommutativeMonoid.java`、`LongMinMonoid.java`、`SegTree.java`。
-文字列連結なら `Monoid.java`、`StringConcatMonoid.java`、`SegTree.java` を使います。
 
 ### Integerで使う場合
 

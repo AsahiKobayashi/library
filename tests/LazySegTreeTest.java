@@ -30,12 +30,8 @@ class LazySegTreeTest {
         eq(7L, new LongXorMonoid().op(2L, 5L));
         eq(true, new BooleanAndMonoid().e());
         eq(false, new BooleanOrMonoid().e());
-        eq("ab", new StringConcatMonoid().op("a", "b"));
-        eq(false, ((Object) new StringConcatMonoid()) instanceof CommutativeMonoid);
         SegTree<Long> s = new SegTree<>(java.util.Arrays.asList(7L, 2L, 5L), new LongMinMonoid());
         eq(2L, s.prod(0, 3));
-        SegTree<String> t = new SegTree<>(java.util.Arrays.asList("x", "y"), new StringConcatMonoid());
-        eq("xy", t.prod(0, 2));
     }
 
     /** 空配列・点更新・区間加算・区間代入の基本動作を確認する。 */

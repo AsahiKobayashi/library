@@ -40,16 +40,6 @@ class LibraryTest {
         eq(0L, seg.prod(2, 2));
         eq(10L, seg.get(2));
 
-        Monoid<String> concat = new Monoid<>() {
-            public String e() { return ""; }
-            public String op(String a, String b) { return a + b; }
-        };
-        SegTree<String> words = new SegTree<>(java.util.Arrays.asList("a", "b", "c"), concat);
-        eq("abc", words.prod(0, 3));
-        eq("bc", words.prod(1, 3));
-        words.set(1, "X");
-        eq("aXc", words.allProd());
-
         int[][] g = {{1, 2}, {0, 3}, {0}, {1}, {}};
         int[] bfs = BFS.dist(g, 0);
         eq(2, bfs[3]); eq(-1, bfs[4]);

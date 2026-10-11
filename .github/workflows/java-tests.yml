@@ -24,3 +24,5 @@ jobs:
         run: java -cp out LibraryTest
       - name: Test lazy tree and monoid presets
         run: java -cp out LazySegTreeTest
+      - name: Test Integer variants
+        run: java -cp out IntegerLibraryTest
