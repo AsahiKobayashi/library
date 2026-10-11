@@ -19,7 +19,7 @@ jobs:
       - name: Compile all source files
         run: |
           mkdir -p out
-          find algebra data-structures graph math tests -name '*.java' -print0 | xargs -0 javac -d out
+          find monoid data-structures graph math tests -name '*.java' -print0 | xargs -0 javac -d out
       - name: Test standard library
         run: java -cp out LibraryTest
       - name: Test lazy tree and monoid presets

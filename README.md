@@ -11,13 +11,41 @@ Java 17 用の競技プログラミングライブラリ。**import不要・日�
 - 演算の定義はデータ構造とは別ファイルに置く
 - `FenwickTree` はシンプルな `long` 加算・区間和専用とする
 
+## ディレクトリ構成
+
+```text
+monoid/
+├── interface/
+│   ├── Monoid.java
+│   ├── CommutativeMonoid.java
+│   └── MonoidAction.java
+└── template/
+    ├── commutative/
+    │   ├── sum/             # IntegerSumMonoid, LongSumMonoid
+    │   ├── product/
+    │   ├── min/
+    │   ├── max/
+    │   ├── gcd/
+    │   ├── xor/
+    │   ├── and/
+    │   └── or/
+    ├── noncommutative/
+    │   └── concat/          # StringConcatMonoid
+    └── action/
+        ├── common/          # SumLen, IntSumLen
+        ├── range-add-sum/
+        └── range-assign-sum/
+```
+
+`interface/` は演算の共通ルール、`template/` はその具体的な実装です。各Javaファイルのクラス名や実装は移動前と同じで、`import` も不要です。
+
 ## モノイドのインターフェース
 
 | インターフェース | 用途 |
 | --- | --- |
-| [Monoid.java](algebra/Monoid.java) | `e()`：単位元、`op(a,b)`：結合演算 |
-| [CommutativeMonoid.java](algebra/CommutativeMonoid.java) | 交換法則を満たす `Monoid`（逆元は不要） |
-| [MonoidAction.java](algebra/MonoidAction.java) | 遅延更新用の `id()`、`mapping(f,x)`、`composition(f,g)`（先にg、次にf） |
+| [Monoid.java](monoid/interface/Monoid.java) | `e()`：単位元、`op(a,b)`：結合演算 |
+| [CommutativeMonoid.java](monoid/interface/CommutativeMonoid.java) | 交換法則を満たす `Monoid`（逆元は不要） |
+| [MonoidAction.java](monoid/interface/MonoidAction.java) | 遅延更新用の `id()`、`mapping(f,x)`、`composition(f,g)`（先にg、次にf） |
 
 ## 定番モノイド
 
@@ -29,31 +57,31 @@ Java 17 用の競技プログラミングライブラリ。**import不要・日�
 
 | 演算 | Integer版 | Long版 | 単位元 |
 | --- | --- | --- | --- |
-| 加算 | [IntegerSumMonoid](algebra/monoids/commutative/sum/IntegerSumMonoid.java) | [LongSumMonoid](algebra/monoids/commutative/sum/LongSumMonoid.java) | `0` / `0L` |
-| 乗算 | [IntegerProductMonoid](algebra/monoids/commutative/product/IntegerProductMonoid.java) | [LongProductMonoid](algebra/monoids/commutative/product/LongProductMonoid.java) | `1` / `1L` |
-| 最小値 | [IntegerMinMonoid](algebra/monoids/commutative/min/IntegerMinMonoid.java) | [LongMinMonoid](algebra/monoids/commutative/min/LongMinMonoid.java) | 各型の最大値 |
-| 最大値 | [IntegerMaxMonoid](algebra/monoids/commutative/max/IntegerMaxMonoid.java) | [LongMaxMonoid](algebra/monoids/commutative/max/LongMaxMonoid.java) | 各型の最小値 |
-| 最大公約数（非負整数） | [IntegerGcdMonoid](algebra/monoids/commutative/gcd/IntegerGcdMonoid.java) | [LongGcdMonoid](algebra/monoids/commutative/gcd/LongGcdMonoid.java) | `0` / `0L` |
-| XOR | [IntegerXorMonoid](algebra/monoids/commutative/xor/IntegerXorMonoid.java) | [LongXorMonoid](algebra/monoids/commutative/xor/LongXorMonoid.java) | `0` / `0L` |
-| ビットAND | [IntegerAndMonoid](algebra/monoids/commutative/and/IntegerAndMonoid.java) | — | `-1` |
-| ビットOR | [IntegerOrMonoid](algebra/monoids/commutative/or/IntegerOrMonoid.java) | — | `0` |
-| 論理AND | — | [BooleanAndMonoid](algebra/monoids/commutative/and/BooleanAndMonoid.java) | `true` |
-| 論理OR | — | [BooleanOrMonoid](algebra/monoids/commutative/or/BooleanOrMonoid.java) | `false` |
+| 加算 | [IntegerSumMonoid](monoid/template/commutative/sum/IntegerSumMonoid.java) | [LongSumMonoid](monoid/template/commutative/sum/LongSumMonoid.java) | `0` / `0L` |
+| 乗算 | [IntegerProductMonoid](monoid/template/commutative/product/IntegerProductMonoid.java) | [LongProductMonoid](monoid/template/commutative/product/LongProductMonoid.java) | `1` / `1L` |
+| 最小値 | [IntegerMinMonoid](monoid/template/commutative/min/IntegerMinMonoid.java) | [LongMinMonoid](monoid/template/commutative/min/LongMinMonoid.java) | 各型の最大値 |
+| 最大値 | [IntegerMaxMonoid](monoid/template/commutative/max/IntegerMaxMonoid.java) | [LongMaxMonoid](monoid/template/commutative/max/LongMaxMonoid.java) | 各型の最小値 |
+| 最大公約数（非負整数） | [IntegerGcdMonoid](monoid/template/commutative/gcd/IntegerGcdMonoid.java) | [LongGcdMonoid](monoid/template/commutative/gcd/LongGcdMonoid.java) | `0` / `0L` |
+| XOR | [IntegerXorMonoid](monoid/template/commutative/xor/IntegerXorMonoid.java) | [LongXorMonoid](monoid/template/commutative/xor/LongXorMonoid.java) | `0` / `0L` |
+| ビットAND | [IntegerAndMonoid](monoid/template/commutative/and/IntegerAndMonoid.java) | — | `-1` |
+| ビットOR | [IntegerOrMonoid](monoid/template/commutative/or/IntegerOrMonoid.java) | — | `0` |
+| 論理AND | — | [BooleanAndMonoid](monoid/template/commutative/and/BooleanAndMonoid.java) | `true` |
+| 論理OR | — | [BooleanOrMonoid](monoid/template/commutative/or/BooleanOrMonoid.java) | `false` |
 
 ### 非可換モノイド
 
 | 演算 | 実装 | 単位元 |
 | --- | --- | --- |
-| 文字列連結 | [StringConcatMonoid](algebra/monoids/noncommutative/concat/StringConcatMonoid.java) | 空文字列 |
+| 文字列連結 | [StringConcatMonoid](monoid/template/noncommutative/concat/StringConcatMonoid.java) | 空文字列 |
 
 ## モノイド作用（Lazy Segment Tree）
 
 | 演算 | Integer版 | Long版 |
 | --- | --- | --- |
-| 区間加算・区間和 | [IntRangeAddSumAction](algebra/actions/range-add-sum/IntRangeAddSumAction.java) | [RangeAddSumAction](algebra/actions/range-add-sum/RangeAddSumAction.java) |
-| 区間代入・区間和 | [IntRangeAssignSumAction](algebra/actions/range-assign-sum/IntRangeAssignSumAction.java) | [RangeAssignSumAction](algebra/actions/range-assign-sum/RangeAssignSumAction.java) |
+| 区間加算・区間和 | [IntRangeAddSumAction](monoid/template/action/range-add-sum/IntRangeAddSumAction.java) | [RangeAddSumAction](monoid/template/action/range-add-sum/RangeAddSumAction.java) |
+| 区間代入・区間和 | [IntRangeAssignSumAction](monoid/template/action/range-assign-sum/IntRangeAssignSumAction.java) | [RangeAssignSumAction](monoid/template/action/range-assign-sum/RangeAssignSumAction.java) |
 
-区間和と要素数は、`Integer` 用の [IntSumLen](algebra/actions/common/IntSumLen.java) または `long` 用の [SumLen](algebra/actions/common/SumLen.java) で管理します。区間代入の更新値 `null` は「更新なし」です。
+区間和と要素数は、`Integer` 用の [IntSumLen](monoid/template/action/common/IntSumLen.java) または `long` 用の [SumLen](monoid/template/action/common/SumLen.java) で管理します。区間代入の更新値 `null` は「更新なし」です。
 
 ## データ構造
 
@@ -140,7 +168,7 @@ JDK 17 以上。Linux/macOS のリポジトリルートから実行：
 
 ```sh
 mkdir -p out
-javac -d out $(find algebra data-structures graph math tests -name '*.java')
+javac -d out $(find monoid data-structures graph math tests -name '*.java')
 java -cp out LibraryTest
 java -cp out LazySegTreeTest
 java -cp out IntegerLibraryTest
@@ -149,7 +177,7 @@ java -cp out IntegerLibraryTest
 Windows PowerShell では次のようにコンパイルできます：
 
 ```powershell
-$files = Get-ChildItem algebra,data-structures,graph,math,tests -Recurse -Filter *.java | ForEach-Object FullName
+$files = Get-ChildItem monoid,data-structures,graph,math,tests -Recurse -Filter *.java | ForEach-Object FullName
 New-Item -ItemType Directory -Force out | Out-Null
 javac -d out $files
 java -cp out LibraryTest
