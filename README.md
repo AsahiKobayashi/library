@@ -1,10 +1,10 @@
 # Competitive Programming Library — Java
 
-Java 17 向けの **import 不要・ジェネリクス中心・汎用性重視** の競プロライブラリです。各メソッドには日本語のJavadocを付けています。
+Java 17 向けの **import 不要・必要な箇所はジェネリクスで汎用化**した競プロライブラリです。各メソッドには日本語のJavadocを付けています。
 
 ## 設計方針
 - 標準ライブラリは完全修飾名で参照し、`import` を書かない
-- 演算の定義はデータ構造から分離し、`algebra/` に配置
+- セグメント木の演算は `algebra/Monoid.java` に分離。Fenwick Tree は `long` の加算専用
 - 必要なクラスを `Main` の外側に貼り付ける（パッケージ宣言なし）
 - 0-indexed、区間は原則 `[l, r)`
 - 使うデータ構造に応じて、必要なインターフェースもコピーする
@@ -13,14 +13,13 @@ Java 17 向けの **import 不要・ジェネリクス中心・汎用性重視**
 | ファイル | 説明 |
 | --- | --- |
 | [Monoid.java](algebra/Monoid.java) | モノイド：単位元 `e()`、結合演算 `op(a,b)` |
-| [CommutativeGroup.java](algebra/CommutativeGroup.java) | 可換群：モノイドに逆元 `inverse(a)` を追加 |
 
 ## Data Structures
 | ファイル | 説明 | 依存 |
 | --- | --- | --- |
 | [DSU.java](data-structures/DSU.java) | Union-Find | なし |
 | [SegTree.java](data-structures/SegTree.java) | 任意のモノイドによる区間集約 | `Monoid.java` |
-| [FenwickTree.java](data-structures/FenwickTree.java) | 可換群による点更新・区間集約 | `Monoid.java` + `CommutativeGroup.java` |
+| [FenwickTree.java](data-structures/FenwickTree.java) | `long` の点加算・区間和 | なし |
 
 ## Graph
 | ファイル | 説明 |
@@ -50,18 +49,16 @@ System.out.println(seg.prod(0, 3)); // 6
 
 `SegTree` を使うときは **`Monoid.java` と `SegTree.java` の両方**をコピーしてください。
 
+Fenwick Tree は演算の定義なしで使えます。
+
 ```java
-CommutativeGroup<Long> addition = new CommutativeGroup<>() {
-    public Long e() { return 0L; }
-    public Long op(Long a, Long b) { return a + b; }
-    public Long inverse(Long a) { return -a; }
-};
-FenwickTree<Long> fw = new FenwickTree<>(5, addition);
+FenwickTree fw = new FenwickTree(5);
 fw.add(0, 4L);
-System.out.println(fw.sum(0, 1)); // 4
+fw.add(2, -1L);
+System.out.println(fw.sum(0, 3)); // 3
 ```
 
-`FenwickTree` には **`Monoid.java`、`CommutativeGroup.java`、`FenwickTree.java`** が必要です。可換群では結合法則・単位元・交換法則・逆元が成立している必要があります。
+`FenwickTree.java` だけをコピーすれば利用できます。
 
 `Monoid` は交換法則を必要としないので、文字列結合などにも利用できます。
 
@@ -76,4 +73,4 @@ java -cp tests:algebra:data-structures:graph:math LibraryTest
 
 Windows ではクラスパスの区切りを `;` に変更してください。
 
-**補足:** `Long` などのラッパー型を利用するため、プリミティブ特化実装よりオーバーヘッドがあります。汎用性を優先した設計です。
+**補足:** `SegTree<T>` は汎用型、`FenwickTree` は加算専用の `long` 型です。
