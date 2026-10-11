@@ -43,17 +43,17 @@ class AccessibleDequeTest {
         throwsType(NullPointerException.class, () -> d.addLast(null));
         throwsType(IllegalArgumentException.class, () -> new AccessibleDeque<String>(-1));
 
-        d = new AccessibleDeque<>(java.util.Arrays.asList("a", "b", "c"));
+        AccessibleDeque<String> other = new AccessibleDeque<>(java.util.Arrays.asList("a", "b", "c"));
         StringBuilder sb = new StringBuilder();
-        for (String x : d) sb.append(x);
+        for (String x : other) sb.append(x);
         eq("abc", sb.toString());
-        java.util.Iterator<String> iter = d.iterator();
+        java.util.Iterator<String> iter = other.iterator();
         eq("a", iter.next());
-        d.addLast("d");
+        other.addLast("d");
         throwsType(java.util.ConcurrentModificationException.class, iter::hasNext);
-        d.clear();
-        eq(0, d.size());
-        eq(null, d.peekLast());
+        other.clear();
+        eq(0, other.size());
+        eq(null, other.peekLast());
     }
 
     /** ランダム操作をArrayListによる単純実装と比較する。 */
