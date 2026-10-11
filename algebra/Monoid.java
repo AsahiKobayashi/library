@@ -4,7 +4,7 @@
  */
 interface Monoid<T> {
     /** @return 単位元。 */
-    T identity();
+    T e();
 
     /**
      * 2つの値を左から右の順番で結合する。
@@ -12,5 +12,5 @@ interface Monoid<T> {
      * @param b 右側の値
      * @return 結合結果
      */
-    T combine(T a, T b);
+    T op(T a, T b);
 }
