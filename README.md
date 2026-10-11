@@ -25,16 +25,20 @@ Java 17 用の競技プログラミングライブラリ。**import不要・日�
 
 ### 可換モノイド
 
-| 演算 | 実装 | 単位元 |
-| --- | --- | --- |
-| 加算 | [LongSumMonoid](algebra/monoids/commutative/sum/LongSumMonoid.java) | `0L` |
-| 乗算 | [LongProductMonoid](algebra/monoids/commutative/product/LongProductMonoid.java) | `1L` |
-| 最小値 | [LongMinMonoid](algebra/monoids/commutative/min/LongMinMonoid.java) | `Long.MAX_VALUE` |
-| 最大値 | [LongMaxMonoid](algebra/monoids/commutative/max/LongMaxMonoid.java) | `Long.MIN_VALUE` |
-| 最大公約数（非負整数） | [LongGcdMonoid](algebra/monoids/commutative/gcd/LongGcdMonoid.java) | `0L` |
-| XOR | [LongXorMonoid](algebra/monoids/commutative/xor/LongXorMonoid.java) | `0L` |
-| 論理AND | [BooleanAndMonoid](algebra/monoids/commutative/and/BooleanAndMonoid.java) | `true` |
-| 論理OR | [BooleanOrMonoid](algebra/monoids/commutative/or/BooleanOrMonoid.java) | `false` |
+同じ演算フォルダに `Integer` 版と `Long` 版を置いています。
+
+| 演算 | Integer版 | Long版 | 単位元 |
+| --- | --- | --- | --- |
+| 加算 | [IntegerSumMonoid](algebra/monoids/commutative/sum/IntegerSumMonoid.java) | [LongSumMonoid](algebra/monoids/commutative/sum/LongSumMonoid.java) | `0` / `0L` |
+| 乗算 | [IntegerProductMonoid](algebra/monoids/commutative/product/IntegerProductMonoid.java) | [LongProductMonoid](algebra/monoids/commutative/product/LongProductMonoid.java) | `1` / `1L` |
+| 最小値 | [IntegerMinMonoid](algebra/monoids/commutative/min/IntegerMinMonoid.java) | [LongMinMonoid](algebra/monoids/commutative/min/LongMinMonoid.java) | 各型の最大値 |
+| 最大値 | [IntegerMaxMonoid](algebra/monoids/commutative/max/IntegerMaxMonoid.java) | [LongMaxMonoid](algebra/monoids/commutative/max/LongMaxMonoid.java) | 各型の最小値 |
+| 最大公約数（非負整数） | [IntegerGcdMonoid](algebra/monoids/commutative/gcd/IntegerGcdMonoid.java) | [LongGcdMonoid](algebra/monoids/commutative/gcd/LongGcdMonoid.java) | `0` / `0L` |
+| XOR | [IntegerXorMonoid](algebra/monoids/commutative/xor/IntegerXorMonoid.java) | [LongXorMonoid](algebra/monoids/commutative/xor/LongXorMonoid.java) | `0` / `0L` |
+| ビットAND | [IntegerAndMonoid](algebra/monoids/commutative/and/IntegerAndMonoid.java) | — | `-1` |
+| ビットOR | [IntegerOrMonoid](algebra/monoids/commutative/or/IntegerOrMonoid.java) | — | `0` |
+| 論理AND | — | [BooleanAndMonoid](algebra/monoids/commutative/and/BooleanAndMonoid.java) | `true` |
+| 論理OR | — | [BooleanOrMonoid](algebra/monoids/commutative/or/BooleanOrMonoid.java) | `false` |
 
 ### 非可換モノイド
 
@@ -44,13 +48,12 @@ Java 17 用の競技プログラミングライブラリ。**import不要・日�
 
 ## モノイド作用（Lazy Segment Tree）
 
-| 演算 | 実装 | 更新の型 |
+| 演算 | Integer版 | Long版 |
 | --- | --- | --- |
-| 区間加算・区間和 | [RangeAddSumAction](algebra/actions/range-add-sum/RangeAddSumAction.java) | `Long`（加算量） |
-| 区間代入・区間和 | [RangeAssignSumAction](algebra/actions/range-assign-sum/RangeAssignSumAction.java) | `Long`（代入値） |
+| 区間加算・区間和 | [IntRangeAddSumAction](algebra/actions/range-add-sum/IntRangeAddSumAction.java) | [RangeAddSumAction](algebra/actions/range-add-sum/RangeAddSumAction.java) |
+| 区間代入・区間和 | [IntRangeAssignSumAction](algebra/actions/range-assign-sum/IntRangeAssignSumAction.java) | [RangeAssignSumAction](algebra/actions/range-assign-sum/RangeAssignSumAction.java) |
 
-どちらも集約値に [SumLen](algebra/actions/common/SumLen.java)（`sum` と `len`）を使います。
-`RangeAssignSumAction` の更新値 `null` は「更新なし」です。
+区間和と要素数は、`Integer` 用の [IntSumLen](algebra/actions/common/IntSumLen.java) または `long` 用の [SumLen](algebra/actions/common/SumLen.java) で管理します。区間代入の更新値 `null` は「更新なし」です。
 
 ## データ構造
 
@@ -78,6 +81,33 @@ System.out.println(seg.prod(0, 3)); // 1
 
 必要なファイル：`Monoid.java`、`CommutativeMonoid.java`、`LongMinMonoid.java`、`SegTree.java`。
 文字列連結なら `Monoid.java`、`StringConcatMonoid.java`、`SegTree.java` を使います。
+
+### Integerで使う場合
+
+```java
+SegTree<Integer> seg = new SegTree<>(
+    java.util.Arrays.asList(1, 2, 3),
+    new IntegerSumMonoid()
+);
+System.out.println(seg.prod(0, 3)); // 6
+```
+
+必要なファイル：`Monoid.java`、`CommutativeMonoid.java`、`IntegerSumMonoid.java`、`SegTree.java`。
+
+```java
+LazySegTree<IntSumLen, Integer> lazy = new LazySegTree<>(
+    java.util.Arrays.asList(
+        IntSumLen.leaf(1), IntSumLen.leaf(2), IntSumLen.leaf(3)
+    ),
+    new IntRangeAddSumAction()
+);
+lazy.apply(0, 2, 4);
+System.out.println(lazy.prod(0, 3).sum); // 14
+```
+
+必要なファイル：`Monoid.java`、`MonoidAction.java`、`IntSumLen.java`、`IntRangeAddSumAction.java`、`LazySegTree.java`。区間代入なら `IntRangeAssignSumAction.java` に変更してください。
+
+**注意：`Integer` の和・積・区間和は `int` の上限・下限を超えるとオーバーフローします。** 和や積が大きくなりそうな問題では、従来の `Long` 版を使ってください。
 
 ### 区間加算・区間和の遅延セグメント木
 
@@ -113,12 +143,14 @@ mkdir -p out
 javac -d out $(find algebra data-structures graph math tests -name '*.java')
 java -cp out LibraryTest
 java -cp out LazySegTreeTest
+java -cp out IntegerLibraryTest
 ```
 
 Windows PowerShell では次のようにコンパイルできます：
 
 ```powershell
 $files = Get-ChildItem algebra,data-structures,graph,math,tests -Recurse -Filter *.java | ForEach-Object FullName
+New-Item -ItemType Directory -Force out | Out-Null
 javac -d out $files
 java -cp out LibraryTest
 java -cp out LazySegTreeTest
