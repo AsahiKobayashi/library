@@ -34,3 +34,5 @@ jobs:
         run: java -cp out BinaryTrieTest
       - name: Test AccessibleDeque
         run: java -cp out AccessibleDequeTest
+      - name: Test Multiset and SortedMultiset
+        run: java -cp out MultisetTest
