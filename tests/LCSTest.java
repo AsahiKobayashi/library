@@ -1,3 +1,4 @@
+// Source: https://github.com/AsahiKobayashi/library/blob/main/tests/LCSTest.java
 /** 最長共通部分列と最長共通部分文字列の動作を検証する。 */
 class LCSTest {
     /** 期待値との一致を確認する。 */

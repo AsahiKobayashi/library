@@ -1,3 +1,4 @@
+// Source: https://github.com/AsahiKobayashi/library/blob/main/tests/LazySegTreeTest.java
 /** LazySegTreeと定番モノイドの境界条件・ランダムケースを検証する。 */
 class LazySegTreeTest {
     /** 期待値と結果が等しいことを確認する。 */

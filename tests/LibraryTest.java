@@ -1,3 +1,4 @@
+// Source: https://github.com/AsahiKobayashi/library/blob/main/tests/LibraryTest.java
 /** ライブラリの基本動作を確認する簡易テスト。 */
 class LibraryTest {
     /** 期待値と実際の値が一致することを確認する。 */

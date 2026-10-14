@@ -1,3 +1,4 @@
+// Source: https://github.com/AsahiKobayashi/library/blob/main/tests/RollingHashTest.java
 /** RollingHashの区間抽出・連結・遅延更新・木との連携を検証する。 */
 class RollingHashTest {
     /** 期待値と実際の値の一致を確認する。 */

@@ -1,3 +1,4 @@
+// Source: https://github.com/AsahiKobayashi/library/blob/main/tests/MultisetTest.java
 /** MultisetとSortedMultisetを標準コレクションの単純実装と比較する。 */
 class MultisetTest {
     /**

@@ -1,3 +1,4 @@
+// Source: https://github.com/AsahiKobayashi/library/blob/main/tests/IntegerLibraryTest.java
 /** Integerの各モノイド、SegTree、遅延セグメント木を検証する。 */
 class IntegerLibraryTest {
     /**

@@ -1,3 +1,4 @@
+// Source: https://github.com/AsahiKobayashi/library/blob/main/tests/BinaryTrieTest.java
 /** BinaryTrieの重複、順位、XOR、削除を単純な多重集合で検証する。 */
 class BinaryTrieTest {
     /** 2つの値が一致することを確認する。 */
