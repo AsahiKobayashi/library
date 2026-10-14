@@ -1,3 +1,4 @@
+// Source: https://github.com/AsahiKobayashi/library/blob/main/monoid/interface/Monoid.java
 /**
  * 結合法則と単位元を持つ二項演算（モノイド）。
  * @param <T> 管理する値の型

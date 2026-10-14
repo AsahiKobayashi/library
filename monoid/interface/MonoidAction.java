@@ -1,3 +1,4 @@
+// Source: https://github.com/AsahiKobayashi/library/blob/main/monoid/interface/MonoidAction.java
 /**
  * 遅延セグメント木で用いるモノイドと作用の組。
  * composition(f, g) は「先にg、次にf」を意味する。

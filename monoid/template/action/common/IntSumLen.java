@@ -1,3 +1,4 @@
+// Source: https://github.com/AsahiKobayashi/library/blob/main/monoid/template/action/common/IntSumLen.java
 /**
  * Integerの区間和と要素数の組。
  * 合計や更新結果がintの範囲を超える場合はオーバーフローする。

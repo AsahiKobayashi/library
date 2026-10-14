@@ -1,3 +1,4 @@
+// Source: https://github.com/AsahiKobayashi/library/blob/main/math/ModMath.java
 /** 整数の剰余演算に関する便利メソッド。 */
 class ModMath {
     /**

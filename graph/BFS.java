@@ -1,3 +1,4 @@
+// Source: https://github.com/AsahiKobayashi/library/blob/main/graph/BFS.java
 /** 重みなしグラフの幅優先探索。 */
 class BFS {
     /**

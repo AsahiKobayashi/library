@@ -1,3 +1,4 @@
+// Source: https://github.com/AsahiKobayashi/library/blob/main/data-structures/SortedMultiset.java
 /**
  * AVL木によるジェネリックな整列多重集合（重複を許す）。
  * 追加・削除・k番目・順位・前後の値の検索は最悪O(log U)。

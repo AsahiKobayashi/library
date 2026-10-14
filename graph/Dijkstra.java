@@ -1,3 +1,4 @@
+// Source: https://github.com/AsahiKobayashi/library/blob/main/graph/Dijkstra.java
 /** 非負辺重みグラフのダイクストラ法。 */
 class Dijkstra {
     /** 到達不能を表す距離の上限。 */

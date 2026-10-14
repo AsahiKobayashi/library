@@ -1,3 +1,4 @@
+// Source: https://github.com/AsahiKobayashi/library/blob/main/monoid/template/action/common/SumLen.java
 /**
  * 区間和と区間長を組にした値。
  * 区間加算・区間代入で和の変化量を求めるために用いる。
