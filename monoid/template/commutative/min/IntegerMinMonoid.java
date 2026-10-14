@@ -1,3 +1,4 @@
+// Source: https://github.com/AsahiKobayashi/library/blob/main/monoid/template/commutative/min/IntegerMinMonoid.java
 /**
  * Integerの最小値を表す可換モノイド。
  * 加減乗算の結果がintの範囲を超える場合、Javaのintとしてオーバーフローする。

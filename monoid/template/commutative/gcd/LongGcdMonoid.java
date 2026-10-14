@@ -1,3 +1,4 @@
+// Source: https://github.com/AsahiKobayashi/library/blob/main/monoid/template/commutative/gcd/LongGcdMonoid.java
 /** 非負整数の最大公約数（単位元0）を定義するCommutativeMonoid。 */
 class LongGcdMonoid implements CommutativeMonoid<Long> {
     /** @return 単位元。 */

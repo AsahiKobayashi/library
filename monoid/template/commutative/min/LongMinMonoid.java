@@ -1,3 +1,4 @@
+// Source: https://github.com/AsahiKobayashi/library/blob/main/monoid/template/commutative/min/LongMinMonoid.java
 /** long整数の最小値（単位元Long.MAX_VALUE）を定義するCommutativeMonoid。 */
 class LongMinMonoid implements CommutativeMonoid<Long> {
     /** @return 単位元。 */

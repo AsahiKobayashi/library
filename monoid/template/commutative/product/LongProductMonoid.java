@@ -1,3 +1,4 @@
+// Source: https://github.com/AsahiKobayashi/library/blob/main/monoid/template/commutative/product/LongProductMonoid.java
 /** long整数の乗算（単位元1）を定義するCommutativeMonoid。 */
 class LongProductMonoid implements CommutativeMonoid<Long> {
     /** @return 単位元。 */
