@@ -160,7 +160,7 @@ class MultisetTest {
         SortedMultiset<Integer> reversed =
             new SortedMultiset<>(java.util.Arrays.asList(2, 1, 3, 2), java.util.Comparator.reverseOrder());
         eq(java.util.Arrays.asList(3, 2, 2, 1), toList(reversed));
-        eq(2L, reversed.countLessThan(2));
+        eq(1L, reversed.countLessThan(2));
         eq(3, reversed.first());
         eq(1, reversed.last());
 
