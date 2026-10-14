@@ -16,6 +16,16 @@ jobs:
         with:
           distribution: temurin
           java-version: '17'
+      - name: Verify source URL comments
+        run: |
+          while IFS= read -r -d '' file; do
+            expected="// Source: https://github.com/AsahiKobayashi/library/blob/main/${file}"
+            actual="$(head -n 1 "$file")"
+            if [ "$actual" != "$expected" ]; then
+              echo "Incorrect source URL in $file"
+              exit 1
+            fi
+          done < <(find monoid data-structures graph math string tests -name '*.java' -print0)
       - name: Compile all source files
         run: |
           mkdir -p out
