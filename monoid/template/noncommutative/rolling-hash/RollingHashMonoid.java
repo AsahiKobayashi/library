@@ -1,3 +1,4 @@
+// Source: https://github.com/AsahiKobayashi/library/blob/main/monoid/template/noncommutative/rolling-hash/RollingHashMonoid.java
 /** RollingHash.Hashを左から右へ結合する非可換モノイド。 */
 class RollingHashMonoid implements Monoid<RollingHash.Hash> {
     private final RollingHash rolling;

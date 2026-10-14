@@ -1,3 +1,4 @@
+// Source: https://github.com/AsahiKobayashi/library/blob/main/string/lcs/LongestCommonSubsequence.java
 /**
  * 最長共通部分列（LCS / Longest Common Subsequence）。
  * 文字は連続していなくてもよい。文字列はUTF-16のchar単位で扱う。

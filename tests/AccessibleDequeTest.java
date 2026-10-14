@@ -1,3 +1,4 @@
+// Source: https://github.com/AsahiKobayashi/library/blob/main/tests/AccessibleDequeTest.java
 /** AccessibleDequeの両端操作、添字参照、周回と拡張を検証する。 */
 class AccessibleDequeTest {
     /** 期待値と実際の値が等しいことを確認する。 */

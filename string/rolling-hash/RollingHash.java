@@ -1,3 +1,4 @@
+// Source: https://github.com/AsahiKobayashi/library/blob/main/string/rolling-hash/RollingHash.java
 /**
  * 2つの素数法を用いるRolling Hash。左から右への順序を保持する。
  * 文字列はUTF-16のchar単位で扱い、文字コードに1を加えてハッシュ化する。

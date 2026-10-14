@@ -1,3 +1,4 @@
+// Source: https://github.com/AsahiKobayashi/library/blob/main/string/lcs/LongestCommonSubstring.java
 /**
  * 最長共通部分文字列（Longest Common Substring）。
  * 文字が連続した共通区間を求める。最長共通部分列とは異なる。

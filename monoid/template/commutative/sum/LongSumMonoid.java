@@ -1,3 +1,4 @@
+// Source: https://github.com/AsahiKobayashi/library/blob/main/monoid/template/commutative/sum/LongSumMonoid.java
 /** long整数の加算（単位元0）を定義するCommutativeMonoid。 */
 class LongSumMonoid implements CommutativeMonoid<Long> {
     /** @return 単位元。 */

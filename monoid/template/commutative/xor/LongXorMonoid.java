@@ -1,3 +1,4 @@
+// Source: https://github.com/AsahiKobayashi/library/blob/main/monoid/template/commutative/xor/LongXorMonoid.java
 /** long整数のビット単位XOR（単位元0）を定義するCommutativeMonoid。 */
 class LongXorMonoid implements CommutativeMonoid<Long> {
     /** @return 単位元。 */
