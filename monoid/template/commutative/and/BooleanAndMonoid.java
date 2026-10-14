@@ -1,3 +1,4 @@
+// Source: https://github.com/AsahiKobayashi/library/blob/main/monoid/template/commutative/and/BooleanAndMonoid.java
 /** 真偽値の論理AND（単位元true）を定義するCommutativeMonoid。 */
 class BooleanAndMonoid implements CommutativeMonoid<Boolean> {
     /** @return 単位元。 */

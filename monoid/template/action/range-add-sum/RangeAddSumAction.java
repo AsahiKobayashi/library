@@ -1,3 +1,4 @@
+// Source: https://github.com/AsahiKobayashi/library/blob/main/monoid/template/action/range-add-sum/RangeAddSumAction.java
 /** 区間加算・区間和を実現するモノイド作用。更新操作は加算量Long。 */
 class RangeAddSumAction implements MonoidAction<SumLen, Long> {
     /** @return 和が0で長さ0の単位元。 */

@@ -1,3 +1,4 @@
+// Source: https://github.com/AsahiKobayashi/library/blob/main/monoid/template/action/range-assign-sum/RangeAssignSumAction.java
 /**
  * 区間代入・区間和を実現するモノイド作用。
  * 更新操作はLong。nullは「代入しない」の意味で使用する。

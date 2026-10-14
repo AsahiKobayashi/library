@@ -1,3 +1,4 @@
+// Source: https://github.com/AsahiKobayashi/library/blob/main/monoid/template/action/range-add-sum/IntRangeAddSumAction.java
 /**
  * Integerの区間加算・区間和に対応するモノイド作用。
  * 区間集約値はIntSumLen、更新値はIntegerの加算量。

@@ -1,3 +1,4 @@
+// Source: https://github.com/AsahiKobayashi/library/blob/main/monoid/template/action/rolling-hash/RangeAssignHashAction.java
 /**
  * Rolling Hashで区間内の全要素を同じ数値に代入するモノイド作用。
  * 更新fは代入する数値（Long）。nullは「更新なし」を表す。

@@ -1,3 +1,4 @@
+// Source: https://github.com/AsahiKobayashi/library/blob/main/monoid/template/action/rolling-hash/RangeAddHashAction.java
 /**
  * Rolling Hashで区間内の整数に同じ値を加算するモノイド作用。
  * 更新fは加算量（Long）。各整数の桁あふれを伴わない加算を想定する。
