@@ -82,12 +82,63 @@ monoid/
 | [DSU](data-structures/DSU.java) | Union-Find | なし |
 | [BinaryTrie](data-structures/BinaryTrie.java) | 重複する非負整数の管理・XOR最小最大・順位取得・一括XOR | なし |
 | [AccessibleDeque<T>](data-structures/AccessibleDeque.java) | 両端操作＋任意の添字へのO(1)アクセス | なし |
+| [Multiset<T>](data-structures/Multiset.java) | HashMap型の汎用多重集合（重複を保持） | なし |
+| [SortedMultiset<T>](data-structures/SortedMultiset.java) | AVL木による整列多重集合・順位・k番目 | なし |
 | [FenwickTree](data-structures/FenwickTree.java) | `long` 点加算・区間和 | なし |
 | [SegTree<T>](data-structures/SegTree.java) | 点代入・区間集約 | `Monoid<T>` |
 | [LazySegTree<S,F>](data-structures/LazySegTree.java) | 点代入・区間更新・区間集約・境界探索 | `MonoidAction<S,F>` |
 
 グラフ： [BFS](graph/BFS.java) / [Dijkstra](graph/Dijkstra.java)  
 数学： [ModMath](math/ModMath.java)
+
+## Multiset・SortedMultiset
+
+どちらも **ジェネリクス対応**で重複を保持し、`import` や外部インターフェースは必要ありません。
+
+### Multiset<T>（順序なし）
+
+```java
+Multiset<String> bag = new Multiset<>();
+bag.add("apple");
+bag.add("apple", 2);  // 2個追加
+bag.add("orange");
+
+System.out.println(bag.count("apple")); // 3
+System.out.println(bag.size());         // 4（重複込み）
+bag.remove("apple");                    // 1個削除
+System.out.println(bag.distinctSize()); // 2
+```
+
+`count`、`contains`、`add`、`remove`、`removeAll`、`elementSet`、`clear`、重複を含む拡張for文に対応。**平均O(1)** の追加・削除・個数取得です。要素比較には `equals` と `hashCode` を使い、`null` も格納できます。要素数・個数の戻り値は `long` です。
+
+### SortedMultiset<T>（順序あり）
+
+```java
+SortedMultiset<Integer> sorted = new SortedMultiset<>();
+sorted.add(5);
+sorted.add(2);
+sorted.add(5);
+sorted.add(9);
+
+System.out.println(sorted.kth(2));            // 5（0-indexed）
+System.out.println(sorted.countLessThan(5));  // 1
+System.out.println(sorted.floor(7));          // 5
+System.out.println(sorted.ceiling(7));        // 9
+System.out.println(sorted.first());           // 2
+
+// 降順の比較器も指定できる
+SortedMultiset<Integer> reverse =
+    new SortedMultiset<>(java.util.Comparator.reverseOrder());
+reverse.add(1);
+reverse.add(3);
+System.out.println(reverse.kth(0)); // 3
+```
+
+`kth`、`countLessThan`、`countLessThanOrEqual`、`lower`、`floor`、`ceiling`、`higher`、`first`、`last`、`pollFirst`、`pollLast` などに対応。**AVL木**を使い、追加・削除・順位検索・k番目取得は最悪 `O(log U)`（Uは異なる要素の種類数）。反復は昇順で重複も含みます。
+
+自然順序（`Comparable`）のほか、`Comparator<? super T>` を指定できます。**比較結果が0の値は同じ種類**とみなします。要素の `null` は不可。見つからない `floor` 等は `null` を返し、空集合の `first` / `last` は例外になります。
+
+複数個の追加は `add(value, amount)`、複数個の削除は `remove(value, amount)`（実際の削除個数を返す）。どちらも1ファイルのみで動作します。
 
 ## BinaryTrie
 
@@ -277,6 +328,7 @@ java -cp out RollingHashTest
 java -cp out LCSTest
 java -cp out BinaryTrieTest
 java -cp out AccessibleDequeTest
+java -cp out MultisetTest
 ```
 
 Windows PowerShell では次のようにコンパイルできます：
