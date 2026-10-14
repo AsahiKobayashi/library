@@ -1,3 +1,4 @@
+// Source: https://github.com/AsahiKobayashi/library/blob/main/data-structures/Multiset.java
 /**
  * 要素を重複して格納できるジェネリックな多重集合。
  * HashMapを使うため追加・削除・個数取得は平均O(1)。

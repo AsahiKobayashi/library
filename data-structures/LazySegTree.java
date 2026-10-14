@@ -1,3 +1,4 @@
+// Source: https://github.com/AsahiKobayashi/library/blob/main/data-structures/LazySegTree.java
 /**
  * モノイド作用を用いた遅延セグメント木。
  * 点代入・区間更新・区間集約を各O(log n)で処理する。

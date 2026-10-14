@@ -1,3 +1,4 @@
+// Source: https://github.com/AsahiKobayashi/library/blob/main/data-structures/BinaryTrie.java
 /**
  * 非負整数を管理するBinary Trie（重複を許す多重集合）。
  * 下位bitWidthビットだけを扱い、値の範囲は[0, 2^bitWidth)。

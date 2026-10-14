@@ -1,3 +1,4 @@
+// Source: https://github.com/AsahiKobayashi/library/blob/main/data-structures/DSU.java
 /** 経路圧縮とサイズ併合を行う Union-Find。 */
 class DSU {
     private final int[] parent, size;

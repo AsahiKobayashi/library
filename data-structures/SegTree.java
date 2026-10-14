@@ -1,3 +1,4 @@
+// Source: https://github.com/AsahiKobayashi/library/blob/main/data-structures/SegTree.java
 /**
  * 任意のモノイドで区間集約するセグメント木。
  * 添字は0始まり、区間は半開区間 [l, r)。

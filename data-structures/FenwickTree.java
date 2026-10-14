@@ -1,3 +1,4 @@
+// Source: https://github.com/AsahiKobayashi/library/blob/main/data-structures/FenwickTree.java
 /**
  * long 型の加算と区間和を扱う Fenwick Tree（Binary Indexed Tree）。
  * 添字は0始まり、区間は半開区間 [l, r)。

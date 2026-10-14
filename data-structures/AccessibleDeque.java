@@ -1,3 +1,4 @@
+// Source: https://github.com/AsahiKobayashi/library/blob/main/data-structures/AccessibleDeque.java
 /**
  * 添字アクセス可能な可変長Deque（両端キュー）。
  * リングバッファによって先頭・末尾への追加と削除は償却O(1)、
