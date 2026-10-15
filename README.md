@@ -101,6 +101,8 @@ monoid/
 | [Multiset<T>](data-structures/Multiset.java) | HashMap型の汎用多重集合（重複を保持） | なし |
 | [SortedMultiset<T>](data-structures/SortedMultiset.java) | AVL木による整列多重集合・順位・k番目 | なし |
 | [FenwickTree](data-structures/FenwickTree.java) | `long` 点加算・区間和 | なし |
+
+配列ユーティリティ： [ArraysUtil](utils/ArraysUtil.java)（二分探索・降順ソート・反転・座標圧縮・累積和など）
 | [SegTree<T>](data-structures/SegTree.java) | 点代入・区間集約 | `Monoid<T>` |
 | [LazySegTree<S,F>](data-structures/LazySegTree.java) | 点代入・区間更新・区間集約・境界探索 | `MonoidAction<S,F>` |
 
@@ -201,6 +203,39 @@ System.out.println(deque.peekLast()); // 30
 `Iterable<T>` に対応しているため拡張for文も使えます。
 
 **必要なファイルは `AccessibleDeque.java` のみ。**
+
+## ArraysUtil
+
+[ArraysUtil.java](utils/ArraysUtil.java) は、**1ファイル完結**の配列向けユーティリティです。Java 17対応・`import` 不要。配列の型は `int[]`、`long[]`、`double[]`、`T[]`（ジェネリック）に対応しています。
+
+```java
+int[] a = {40, 10, 40, 20};
+
+int[] ranks = ArraysUtil.compress(a);     // [2, 0, 2, 1]：座標圧縮
+int[] keys = ArraysUtil.sortedUnique(a); // [10, 20, 40]
+long[] pref = ArraysUtil.prefixSum(a);   // [0, 40, 50, 90, 110]
+
+int pos = ArraysUtil.lowerBound(keys, 20); // 1（20以上の先頭）
+int end = ArraysUtil.upperBound(keys, 20); // 2（20より大きい先頭）
+
+ArraysUtil.sortDescending(a);             // 元のaを[40, 40, 20, 10]に変更
+ArraysUtil.reverse(a, 1, 3);               // 半開区間[1,3)を反転
+ArraysUtil.swap(a, 0, 3);                  // 添字0と3を交換
+```
+
+`lowerBound` / `upperBound` は**指定された並び順でソート済みの配列**に使います（`O(log n)`）。`compress` と `sortedUnique` は元配列を変更せず、`O(n log n)` です。座標圧縮の順位は **0-indexed**、重複は同じ順位になります。復元したい場合は `sortedUnique(a)[rank]` で元の値を参照できます。
+
+`T[]` は自然順序のほか `Comparator<? super T>` 指定にも対応。例：
+
+```java
+String[] words = {"aaa", "x", "bb", "yy"};
+java.util.Comparator<String> byLength =
+    java.util.Comparator.comparingInt(String::length);
+int[] ranks = ArraysUtil.compress(words, byLength); // [2, 0, 1, 1]
+ArraysUtil.sortDescending(words, byLength);
+```
+
+`prefixSum(int[])` は `long[]` を返し、常に長さは元配列の長さ+1（`prefix[0]=0`）です。`prefixSum(long[])` の `long` オーバーフローには注意してください。`fill(int[][], value)` など2次元配列の行ごとの一括代入も用意しています。
 
 ## 文字列アルゴリズム
 
@@ -336,7 +371,7 @@ JDK 17 以上。Linux/macOS のリポジトリルートから実行：
 
 ```sh
 mkdir -p out
-javac -d out $(find monoid data-structures graph math string tests -name '*.java')
+javac -d out $(find monoid data-structures graph math string utils tests -name '*.java')
 java -cp out LibraryTest
 java -cp out LazySegTreeTest
 java -cp out IntegerLibraryTest
@@ -345,12 +380,13 @@ java -cp out LCSTest
 java -cp out BinaryTrieTest
 java -cp out AccessibleDequeTest
 java -cp out MultisetTest
+java -cp out ArraysUtilTest
 ```
 
 Windows PowerShell では次のようにコンパイルできます：
 
 ```powershell
-$files = Get-ChildItem monoid,data-structures,graph,math,string,tests -Recurse -Filter *.java | ForEach-Object FullName
+$files = Get-ChildItem monoid,data-structures,graph,math,string,utils,tests -Recurse -Filter *.java | ForEach-Object FullName
 New-Item -ItemType Directory -Force out | Out-Null
 javac -d out $files
 java -cp out LibraryTest
