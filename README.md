@@ -101,10 +101,10 @@ monoid/
 | [Multiset<T>](data-structures/Multiset.java) | HashMap型の汎用多重集合（重複を保持） | なし |
 | [SortedMultiset<T>](data-structures/SortedMultiset.java) | AVL木による整列多重集合・順位・k番目 | なし |
 | [FenwickTree](data-structures/FenwickTree.java) | `long` 点加算・区間和 | なし |
-
-配列ユーティリティ： [ArraysUtil](utils/ArraysUtil.java)（二分探索・降順ソート・反転・座標圧縮・累積和など）
 | [SegTree<T>](data-structures/SegTree.java) | 点代入・区間集約 | `Monoid<T>` |
 | [LazySegTree<S,F>](data-structures/LazySegTree.java) | 点代入・区間更新・区間集約・境界探索 | `MonoidAction<S,F>` |
+
+配列ユーティリティ： [ArraysUtil](utils/ArraysUtil.java)（二分探索・降順ソート・反転・座標圧縮・累積和など）
 
 グラフ： [BFS](graph/BFS.java) / [Dijkstra](graph/Dijkstra.java)  
 数学： [ModMath](math/ModMath.java)
