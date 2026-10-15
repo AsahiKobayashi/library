@@ -25,11 +25,11 @@ jobs:
               echo "Incorrect source URL in $file"
               exit 1
             fi
-          done < <(find monoid data-structures graph math string tests -name '*.java' -print0)
+          done < <(find monoid data-structures graph math string utils tests -name '*.java' -print0)
       - name: Compile all source files
         run: |
           mkdir -p out
-          find monoid data-structures graph math string tests -name '*.java' -print0 | xargs -0 javac -d out
+          find monoid data-structures graph math string utils tests -name '*.java' -print0 | xargs -0 javac -d out
       - name: Test standard library
         run: java -cp out LibraryTest
       - name: Test lazy tree and monoid presets
@@ -46,3 +46,5 @@ jobs:
         run: java -cp out AccessibleDequeTest
       - name: Test Multiset and SortedMultiset
         run: java -cp out MultisetTest
+      - name: Test ArraysUtil
+        run: java -cp out ArraysUtilTest
